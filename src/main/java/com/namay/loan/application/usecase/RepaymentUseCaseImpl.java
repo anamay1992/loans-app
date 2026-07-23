@@ -9,7 +9,9 @@ import com.namay.loan.domain.model.constant.PaymentProcess;
 import com.namay.loan.domain.model.constant.RepaymentStrategy;
 import com.namay.loan.domain.port.input.RepaymentUseCase;
 import com.namay.loan.domain.port.output.LoanRepository;
+import io.quarkus.cache.CacheInvalidate;
 import io.quarkus.cache.CacheInvalidateAll;
+import io.quarkus.cache.CacheKey;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
@@ -30,8 +32,9 @@ public class RepaymentUseCaseImpl implements RepaymentUseCase {
     @Override
     @Transactional
     @CacheInvalidateAll(cacheName = "loans-cache")
+    @CacheInvalidate(cacheName = "installments-by-loan-id-cache")
     public void execute(Long loanId,
-                        Long installmentId,
+                        @CacheKey Long installmentId,
                         BigDecimal amountPaid,
                         PaymentProcess processType,
                         RepaymentStrategy strategyType) {
