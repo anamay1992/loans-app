@@ -33,8 +33,8 @@ public class RepaymentUseCaseImpl implements RepaymentUseCase {
     @Transactional
     @CacheInvalidateAll(cacheName = "loans-cache")
     @CacheInvalidate(cacheName = "installments-by-loan-id-cache")
-    public void execute(Long loanId,
-                        @CacheKey Long installmentId,
+    public void execute(@CacheKey Long loanId,
+                        Long installmentId,
                         BigDecimal amountPaid,
                         PaymentProcess processType,
                         RepaymentStrategy strategyType) {
