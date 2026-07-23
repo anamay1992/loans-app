@@ -50,13 +50,20 @@ public class ClientRepositoryAdapter implements ClientRepository {
 
     @Override
     public Client save(Client client) {
-        ClientEntity entity = this.loanDbMapper.toClientEntity(client);
-        if (entity.getId() == null) {
+        if (client.getId() == null) {
+            ClientEntity entity = this.loanDbMapper.toClientEntity(client);
             this.clientRepository.persist(entity);
+            return this.loanDbMapper.toClientDomain(entity);
         } else {
-            entity = this.clientRepository.getEntityManager().merge(entity);
+            ClientEntity existingEntity = this.clientRepository.findById(client.getId());
+            if (existingEntity == null) {
+                throw new RuntimeException("El alma no existe en las catacumbas");
+            }
+            existingEntity.setFullName(client.getFullName());
+            existingEntity.setPhoneNumber(client.getPhoneNumber());
+            existingEntity.setEmail(client.getEmail());
+            return this.loanDbMapper.toClientDomain(existingEntity);
         }
-        return this.loanDbMapper.toClientDomain(entity);
     }
 
     @Override

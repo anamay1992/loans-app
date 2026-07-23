@@ -45,11 +45,7 @@ public class ClientUseCaseImpl implements ClientUseCase {
     @Transactional
     @CacheInvalidateAll(cacheName = "clients-cache")
     public Client updateClient(Client client) {
-        Client existingClient = this.clientRepository.findById(client.getId());
-        existingClient.setFullName(client.getFullName());
-        existingClient.setPhoneNumber(client.getPhoneNumber());
-        existingClient.setEmail(client.getEmail());
-        return this.clientRepository.save(existingClient);
+        return this.clientRepository.save(client);
     }
 
     @Override
