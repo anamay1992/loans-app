@@ -4,6 +4,8 @@ import com.namay.loan.domain.model.Client;
 import com.namay.loan.domain.model.constant.ClientStatus;
 import com.namay.loan.domain.port.input.ClientUseCase;
 import com.namay.loan.domain.port.output.ClientRepository;
+import io.quarkus.cache.CacheInvalidateAll;
+import io.quarkus.cache.CacheResult;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
@@ -20,6 +22,7 @@ public class ClientUseCaseImpl implements ClientUseCase {
 
     @Override
     @Transactional
+    @CacheResult(cacheName = "clients-cache")
     public List<Client> getAllClients() {
         return this.clientRepository.findAll();
     }
@@ -32,6 +35,7 @@ public class ClientUseCaseImpl implements ClientUseCase {
 
     @Override
     @Transactional
+    @CacheInvalidateAll(cacheName = "clients-cache")
     public Client createClient(Client client) {
         client.setStatus(ClientStatus.ACTIVE);
         return this.clientRepository.save(client);
@@ -39,12 +43,14 @@ public class ClientUseCaseImpl implements ClientUseCase {
 
     @Override
     @Transactional
+    @CacheInvalidateAll(cacheName = "clients-cache")
     public Client updateClient(Client client) {
         return this.clientRepository.save(client);
     }
 
     @Override
     @Transactional
+    @CacheInvalidateAll(cacheName = "clients-cache")
     public void toggleClientStatus(Client client) {
         this.clientRepository.toggleStatus(client);
     }

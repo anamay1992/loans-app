@@ -20,14 +20,17 @@ public interface LoanDbMapper {
 
     @Named("fullMapper")
     @Mapping(source = "client.id", target = "clientId")
+    @Mapping(source = "client.fullName", target = "clientName")
     Loan toLoanDomainFull(LoanEntity entity);
 
     @Named("summaryMapper")
     @Mapping(source = "client.id", target = "clientId")
+    @Mapping(source = "client.fullName", target = "clientName")
     @Mapping(target = "installments", ignore = true)
     Loan toLoanDomain(LoanEntity entity);
 
     @Mapping(source = "clientId", target = "client.id")
+    @Mapping(source = "clientName", target = "client.fullName")
     LoanEntity toLoanEntity(Loan loan);
 
     Installment toInstallmentDomain(InstallmentEntity entity);

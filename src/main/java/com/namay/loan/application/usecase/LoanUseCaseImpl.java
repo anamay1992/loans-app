@@ -9,6 +9,8 @@ import com.namay.loan.domain.port.output.ClientRepository;
 import com.namay.loan.domain.port.output.LoanRepository;
 import com.namay.loan.domain.service.System;
 import com.namay.loan.domain.service.SystemFactory;
+import io.quarkus.cache.CacheInvalidateAll;
+import io.quarkus.cache.CacheResult;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
@@ -33,6 +35,7 @@ public class LoanUseCaseImpl implements LoanUseCase {
 
     @Override
     @Transactional
+    @CacheResult(cacheName = "loans-cache")
     public List<Loan> getAllLoans() {
         return this.loanRepository.findAll();
     }
@@ -45,6 +48,7 @@ public class LoanUseCaseImpl implements LoanUseCase {
 
     @Override
     @Transactional
+    @CacheInvalidateAll(cacheName = "loans-cache")
     public Loan execute(Long clientId,
                         LocalDate startDate,
                         BigDecimal capital,
@@ -61,6 +65,7 @@ public class LoanUseCaseImpl implements LoanUseCase {
         Loan loan = new Loan(
                 null,
                 client.getId(),
+                client.getFullName(),
                 baseDate,
                 installments.getLast().getDueDate(),
                 capital,

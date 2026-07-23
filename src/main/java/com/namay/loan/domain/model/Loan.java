@@ -13,6 +13,7 @@ public class Loan {
 
     private Long id;
     private Long clientId;
+    private String clientName;
     private LocalDate startDate;
     private LocalDate endDate;
     private BigDecimal capital;
@@ -29,9 +30,10 @@ public class Loan {
     public Loan() {
     }
 
-    public Loan(Long id, Long clientId, LocalDate startDate, LocalDate endDate, BigDecimal capital, LoanSystem systemType, BigDecimal rate, Integer originalMonths, List<Installment> installments, BigDecimal totalEarned, LoanStatus status) {
+    public Loan(Long id, Long clientId, String clientName, LocalDate startDate, LocalDate endDate, BigDecimal capital, LoanSystem systemType, BigDecimal rate, Integer originalMonths, List<Installment> installments, BigDecimal totalEarned, LoanStatus status) {
         this.id = id;
         this.clientId = clientId;
+        this.clientName = clientName;
         this.startDate = startDate;
         this.endDate = endDate;
         this.capital = capital;
@@ -57,6 +59,14 @@ public class Loan {
 
     public void setClientId(Long clientId) {
         this.clientId = clientId;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 
     public LocalDate getStartDate() {
